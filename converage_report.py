@@ -3,10 +3,6 @@ from datetime import datetime, timedelta
 import os
 import numpy as np
 import dask.dataframe as dd
-# from openpyxl import Workbook
-# from openpyxl.utils.dataframe import dataframe_to_rows
-# from openpyxl.styles import Border, Side, Font, PatternFill, Alignment
-# from openpyxl.formatting.rule import ColorScaleRule
 import xlsxwriter
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -381,17 +377,6 @@ def pivot_zone_and_bucket_lvl(unpaid_and_field_df):
     # Combine all rows into a final DataFrame
     final_df = pd.concat(final_rows, ignore_index=True)
 
-    # # Combine dataframes with 'Total' rows
-    # final_rows = []
-    # num_zones = 6  # Assuming 6 zones per bucket
-    # for i in range(0, len(grouped_bucket_zone_sorted), num_zones):
-    #     chunk = grouped_bucket_zone_sorted.iloc[i:i + num_zones]
-    #     final_rows.append(chunk)
-    #     total_row = grouped_bucket_sorted[grouped_bucket_sorted['Zone'] == f"{chunk['Zone'].iloc[0]} Total"]
-    #     final_rows.append(total_row)
-
-    # final_df = pd.concat(final_rows, ignore_index=True)
-
     # Add Grand Total row in a vectorized manner
     grand_total = grouped_bucket_zone_sorted[['ApplicationNo', 'call_coverage', 'visit_coverage', 'total_coverage', 
                                             'click_to_ftd_calls', 'total_ftd_calls', 'ftd_visits']].sum()
@@ -632,18 +617,6 @@ def pivot_state_and_bucket_lvl(unpaid_and_field_df):
 
     # Combine all the final rows into one DataFrame
     final_df = pd.concat(final_rows, ignore_index=True)
-
-    #-------------------------------------- old sorting logic -----------------------------------------------------
-    # # Combine dataframes with 'Total' rows
-    # final_rows = []
-    # num_zones = 6  # Assuming 6 zones per bucket
-    # for i in range(0, len(grouped_bucket_zone_sorted), num_zones):
-    #     chunk = grouped_bucket_zone_sorted.iloc[i:i + num_zones]
-    #     final_rows.append(chunk)
-    #     total_row = grouped_bucket_sorted[grouped_bucket_sorted['State'] == f"{chunk['State'].iloc[0]} Total"]
-    #     final_rows.append(total_row)
-
-    # final_df = pd.concat(final_rows, ignore_index=True)
 
     # Add Grand Total row
     grand_total = grouped_bucket_zone_sorted[['ApplicationNo', 'call_coverage', 'visit_coverage', 'total_coverage', 'click_to_ftd_calls', 'total_ftd_calls', 'ftd_visits']].sum()
@@ -1335,17 +1308,16 @@ body_template = """
 """
 
 # Email configuration
-email_address = "collections.mis@finnable.com"
+email_address = "sample_id@finnable.com"
 smtp_server = "smtppro.zoho.com"
 smtp_port = 465
-password = 'Finnable@123'
+password = '123'
 
 # Example usage
 mail_dict = {
     'Collection Coverage': {
-        'to': ['hocollections@finnable.com', 'collections@finnable.com'],
-        'cc': ['balaji.ashwin@finnable.com', 'sandeep.satsangi@finnable.com', 'saurabh.agrawal@finnable.com', 'sohaib.ansari@finnable.com', 'mohdimran.ali@finnable.com', 'naresh.sharma@finnable.com',
-            'nitin.gupta@finnable.com', 'vaibhav.bhardwaj@finnable.com', 'anupam.vyas@finnable.com', 'khushboo.gupta@finnable.com', 'shivam.ashiwal@finnable.com'],
+        'to': ['abc@finnable.com'],
+        'cc': ['def@finnabl.com'],
         'name': 'All',
         'pivot_html': formatted_html,
         'attachment_paths': [
@@ -1361,7 +1333,7 @@ universal_cc = ['']
 
 def get_password():
     while True:
-        password = 'Finnable@123'
+        password = ''
         if password.lower() == 'exit':
             print("Exiting the program.")
             sys.exit()  # Exit the program if the user types 'exit'
